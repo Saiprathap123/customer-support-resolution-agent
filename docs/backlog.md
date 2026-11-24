@@ -26,9 +26,9 @@ Exit: shared understanding of scope, business rules, architecture, and acceptanc
 
 ### M1: Engineering foundation
 
-- [ ] Review/adopt or replace the incomplete early code draft.
-- [ ] Lock Python/tool versions and dependencies in a clean project.
-- [ ] Add environment example, local PostgreSQL Compose and setup instructions.
+- [x] Preserve the incomplete draft outside the package; adopt only reviewed foundation code.
+- [x] Lock Python/tool versions and dependencies in a clean project.
+- [x] Add environment example, local PostgreSQL Compose and setup instructions.
 - [ ] Establish CI for checks that exist and pass locally.
 - [x] Agree on remote Git hosting and publish the repository when authorized.
 

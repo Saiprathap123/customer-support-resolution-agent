@@ -1,0 +1,43 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "customer-support-resolution-agent"
+version = "0.1.0"
+description = "Deterministic, human-approved support resolution backend"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi>=0.115,<1",
+    "uvicorn>=0.34,<1",
+    "sqlalchemy>=2.0.38,<2.1",
+    "psycopg[binary]>=3.2,<4",
+    "pydantic-settings>=2.8,<3",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28,<1",
+    "pytest>=8.3,<9",
+    "ruff>=0.11,<1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.hatch.build.targets.sdist]
+include = ["/app", "/tests", "/pyproject.toml", "/uv.lock", "/README.md", "/.python-version"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-markers"
+markers = ["postgres: requires TEST_DATABASE_URL pointing at a local/test PostgreSQL database"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+extend-exclude = [".draft", ".uv-cache", ".uv-python", ".verification"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
