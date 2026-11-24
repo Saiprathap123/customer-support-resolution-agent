@@ -19,7 +19,7 @@ implemented, tested locally, and verified in CI; never report one as another.
 - [x] Record the support console and customer form decision.
 - [x] Draft product scope and acceptance scenarios.
 - [x] Draft component responsibilities and database safety design.
-- [ ] Discuss the architecture and agree on synthetic business rules.
+- [x] Discuss the architecture and agree on synthetic business rules.
 - [ ] Resolve proposed technology and identity choices before their implementation.
 
 Exit: shared understanding of scope, business rules, architecture, and acceptance gates.
@@ -30,7 +30,7 @@ Exit: shared understanding of scope, business rules, architecture, and acceptanc
 - [ ] Lock Python/tool versions and dependencies in a clean project.
 - [ ] Add environment example, local PostgreSQL Compose and setup instructions.
 - [ ] Establish CI for checks that exist and pass locally.
-- [ ] Agree on remote Git hosting and publish the repository when authorized.
+- [x] Agree on remote Git hosting and publish the repository when authorized.
 
 Exit: a clean checkout can install dependencies and run the initial meaningful checks.
 
