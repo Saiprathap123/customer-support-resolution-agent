@@ -29,7 +29,7 @@ Exit: shared understanding of scope, business rules, architecture, and acceptanc
 - [x] Preserve the incomplete draft outside the package; adopt only reviewed foundation code.
 - [x] Lock Python/tool versions and dependencies in a clean project.
 - [x] Add environment example, local PostgreSQL Compose and setup instructions.
-- [ ] Establish CI for checks that exist and pass locally.
+- [x] Establish CI for checks that pass locally and on GitHub's Linux runner.
 - [x] Agree on remote Git hosting and publish the repository when authorized.
 
 Exit: a clean checkout can install dependencies and run the initial meaningful checks.

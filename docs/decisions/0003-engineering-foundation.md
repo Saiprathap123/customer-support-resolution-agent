@@ -60,10 +60,13 @@ It must be reviewed against accepted rules before reuse. Unit tests exercise a d
 unreachable local database for failure behavior. CI uses its own PostgreSQL instance;
 there are no live payment/model calls or external service credentials.
 
-Local verification: 9 unit tests and 1 real PostgreSQL integration test pass, formatting
-and lint pass, Compose validates, source/wheel distributions build, and the installed
-wheel imports independently of the checkout. The test client emits an upstream httpx
-deprecation warning; no test fails. CI must separately establish Linux runner results.
+Verification: 9 unit tests and 1 real PostgreSQL integration test pass locally and on
+GitHub's Linux runner. Formatting, lint, Compose validation, distribution builds and
+isolated wheel import pass. The first successful CI run is
+https://github.com/Saiprathap123/customer-support-resolution-agent/actions/runs/45416835889.
+The test client emits an upstream httpx deprecation warning. GitHub also reports the
+pinned actions' Node 20 declarations being run under Node 24. Neither warning fails a
+check; updating these tool integrations remains maintenance work.
 
 Dependency references consulted during implementation:
 - https://docs.astral.sh/uv/guides/integration/github/
