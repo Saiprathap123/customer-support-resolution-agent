@@ -6,10 +6,10 @@ execute safely, and verify the outcome.
 
 ## Current status and scope
 
-Engineering foundation: typed configuration, a minimal FastAPI application, PostgreSQL
-connection/readiness check, local Compose service, locked Python dependencies and CI.
-Business tables, authentication, tickets and refund execution are the next features;
-they are not implemented in this milestone.
+Engineering foundation plus database schema: typed configuration, a minimal FastAPI
+application, PostgreSQL connection/readiness, 15 tenant-scoped application tables,
+Alembic migrations, local Compose, locked dependencies and CI. Synthetic seed data,
+authentication, ticket endpoints and refund execution are the next features.
 
 The complete prototype targets one electronics retailer and INR, with synthetic records
 and mock payment, shipping and ticketing providers. It will handle order status,
@@ -46,6 +46,7 @@ cd customer-support-resolution-agent
 Copy-Item .env.example .env
 uv sync --locked
 docker compose up -d --wait postgres
+uv run --locked alembic upgrade head
 uv run --locked uvicorn app.main:create_app --factory --reload --host 127.0.0.1
 ```
 
@@ -75,30 +76,40 @@ from its separate access log.
 ## Checks and tests
 
 ```powershell
-uv run --locked ruff format --check app tests pyproject.toml
-uv run --locked ruff check app tests pyproject.toml
+uv run --locked ruff format --check app tests migrations pyproject.toml
+uv run --locked ruff check app tests migrations pyproject.toml
 uv run --locked pytest tests/unit -q
-$env:TEST_DATABASE_URL = "postgresql+psycopg://support:support-local-only@localhost:55432/support"
+# Once only: create the separate test database, not the application database.
+docker compose exec -T postgres createdb -U support support_test
+$env:TEST_DATABASE_URL = "postgresql+psycopg://support:support-local-only@127.0.0.1:55432/support_test"
 uv run --locked pytest tests/integration -m postgres -q
 docker compose --env-file .env.example config --quiet
 uv build --no-sources
 ```
 
 For macOS/Linux, set `TEST_DATABASE_URL` using `export TEST_DATABASE_URL='...'`.
-The current database test only checks connectivity/readiness and does not alter data.
-Future schema and financial tests will require a separate disposable test database.
+Database tests create isolated UUID-named schemas within the separate test database,
+exercise migration round trips/constraints and remove only those schemas afterward.
 Integration tests skip locally when `TEST_DATABASE_URL` is unset; CI supplies it and
 starts its own PostgreSQL service. Unit tests require no running database or model calls.
 
-The workflow runs formatting, lint, unit tests, real PostgreSQL connectivity, Compose
-validation, distribution builds, and a wheel installation smoke check on pull requests
+The workflow runs formatting, lint, unit tests, migrations/model-drift checks, real
+PostgreSQL constraint tests, Compose validation, builds and a wheel import on pull requests
 and pushes to `main`. This is CI; there is no deployment target or CD rollout yet.
 
 ## Migrations and seed data
 
-Not implemented yet. The next database feature will add Alembic migrations and the
-following seed feature will add reproducible synthetic data. Commands will be documented
-after they exist and pass their checks.
+```powershell
+uv run --locked alembic upgrade head
+uv run --locked alembic current
+uv run --locked alembic check
+```
+
+See the [database walkthrough](docs/database-walkthrough.md) for tables, constraints,
+test isolation and command explanations. Migration files ship in the repository and
+source distribution; run them from the repository/source root. Downgrading to `base`
+removes application tables and their data; round-trip tests use isolated schemas only.
+Seed data is the next feature; no seed command exists yet.
 
 ## Planning documents
 
@@ -109,6 +120,7 @@ after they exist and pass their checks.
 - [Confirmed interface decision](docs/decisions/0001-support-console.md)
 - [Accepted synthetic refund policy](docs/decisions/0002-synthetic-refund-policy.md)
 - [Foundation choices and walkthrough](docs/decisions/0003-engineering-foundation.md)
+- [Database schema decisions](docs/decisions/0004-business-schema.md)
 
 The original plan is preserved. The blueprint records subsequent scope decisions and
 explicit Stage 1 instructions. Architecture items marked proposed remain open for
