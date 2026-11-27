@@ -68,8 +68,10 @@ the `localhost` connection path. Compose remains bound to loopback on host port 
 Local verification: 41 tests pass (31 schema cases, 1 connectivity case and 9 foundation
 unit cases). Migration upgrade/downgrade/re-upgrade, model-drift checks, ordinary SQL
 trigger guards, formatting/lint, offline SQL generation, source/wheel builds and isolated
-wheel imports pass. The development database is at `0001_business_schema`. Remote CI
-verification remains pending until the database feature PR can be opened.
+wheel imports pass. The development database is at `0001_business_schema`.
+GitHub Linux CI also passed on 2026-11-27, including migrations, model-drift checks,
+PostgreSQL tests and distribution verification:
+https://github.com/Saiprathap123/customer-support-resolution-agent/actions/runs/45952190761.
 
 ## Limits of this feature
 
