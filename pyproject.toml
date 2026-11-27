@@ -14,6 +14,7 @@ dependencies = [
     "sqlalchemy>=2.0.38,<2.1",
     "psycopg[binary]>=3.2,<4",
     "pydantic-settings>=2.8,<3",
+    "alembic>=1.14,<2",
 ]
 
 [dependency-groups]
@@ -27,7 +28,10 @@ dev = [
 packages = ["app"]
 
 [tool.hatch.build.targets.sdist]
-include = ["/app", "/tests", "/pyproject.toml", "/uv.lock", "/README.md", "/.python-version"]
+include = [
+    "/app", "/tests", "/migrations", "/alembic.ini", "/pyproject.toml", "/uv.lock",
+    "/README.md", "/.python-version",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

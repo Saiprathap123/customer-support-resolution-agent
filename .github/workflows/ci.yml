@@ -33,6 +33,7 @@ jobs:
           --health-retries 10
     env:
       TEST_DATABASE_URL: postgresql+psycopg://support:ci-test-only@localhost:5432/support_test
+      DATABASE_URL: postgresql+psycopg://support:ci-test-only@localhost:5432/support_test
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -46,11 +47,15 @@ jobs:
       - name: Install locked dependencies
         run: uv sync --locked
       - name: Check formatting
-        run: uv run --locked ruff format --check app tests pyproject.toml
+        run: uv run --locked ruff format --check app tests migrations pyproject.toml
       - name: Lint
-        run: uv run --locked ruff check app tests pyproject.toml
+        run: uv run --locked ruff check app tests migrations pyproject.toml
       - name: Unit tests
         run: uv run --locked pytest tests/unit -q
+      - name: Apply migrations and check model drift
+        run: |
+          uv run --locked alembic upgrade head
+          uv run --locked alembic check
       - name: PostgreSQL integration
         run: uv run --locked pytest tests/integration -m postgres -q
       - name: Validate Compose configuration

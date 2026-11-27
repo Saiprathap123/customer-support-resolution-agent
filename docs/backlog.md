@@ -36,7 +36,7 @@ Exit: a clean checkout can install dependencies and run the initial meaningful c
 
 ### M2: Deterministic business workflow (Stage 1)
 
-- [ ] PostgreSQL schema/migrations for all required tables and supporting seed records.
+- [x] PostgreSQL schema/migrations for all required tables; supporting seed records follow.
 - [ ] Tenant-scoped identity, ownership and reviewer authorization checks.
 - [ ] Synthetic electronics catalog, customers, orders, payments, deliveries, returns,
       tickets and versioned policies.
