@@ -36,19 +36,31 @@ one issue per workflow, and all refunds require human approval. Exclude chargeba
 fraud adjudication, complex partial returns, voice, WhatsApp, Shopify, MCP, and live
 merchant onboarding. No independent reusable agent platform is a prototype deliverable.
 
-## Business rules still to agree before implementation
+## Accepted synthetic refund rules
 
-- Currency: propose INR; not yet confirmed.
-- Refund granularity: propose full-order returns/refunds initially, with no split
-  payments, fees, partial quantities, or automatic exceptions.
-- Return window, inspection requirements, maximum refund amount, and approval lifetime:
-  establish explicit synthetic rules and boundary cases before implementing eligibility.
+Accepted by the user on 2026-11-24; see [ADR 0002](decisions/0002-synthetic-refund-policy.md).
+
+- INR; full-order returns and refunds only. No split payments, fees, partial quantities,
+  or automatic exceptions in the initial execution path.
+- One fully captured payment matching the order's paid amount and currency.
+- Return requested within 30 days after confirmed delivery, then received and inspection passed.
+- Refund the full paid amount. Existing refunds or reservations prevent another full refund.
+- Maximum executable refund: INR 10,000 (1000000 minor units). Larger cases escalate;
+  this does not establish that the customer is financially ineligible.
+- Every refund requires approval, valid for 24 hours. Material proposal or evidence
+  changes require a fresh proposal and approval.
+- Select the applicable synthetic policy version by delivery date; evaluate the return
+  request against that version's window.
+- Damaged-item complaints require evidence collection and human review, not an automatic
+  refund based solely on the complaint.
+
+## Open design details
+
 - Staff permissions: specify what operators can inspect or execute and whether reviewers
   may approve proposals they created. Do not assume segregation-of-duties rules silently.
 - Evidence requirements for damaged items: define the prototype input and storage scope.
-- Applicable policy date: define whether each rule uses purchase, delivery, or return date.
 
-Values in the early draft code are proposals, not agreed business requirements.
+The early application draft must be aligned with these rules before adoption.
 
 ## Representative resolution
 
